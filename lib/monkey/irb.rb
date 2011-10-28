@@ -23,4 +23,11 @@ module IRB
       irb_at_exit
     end
   end
+
+  module ExtendCommandBundle
+    def irspec
+      InteractiveRspec.configure
+      pushws new_extended_example_group
+    end
+  end
 end
