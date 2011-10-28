@@ -1,7 +1,31 @@
 require 'interactive_rspec/version'
 require 'rspec'
+require 'irb'
+require 'irb/completion'
+require File.join(File.dirname(__FILE__), 'monkey/irb')
+require File.join(File.dirname(__FILE__), 'monkey/rspec')
 
 module InteractiveRspec
+  def self.start(options = {})
+    configure if {:configure => true}.merge(options)
+    IRB.start_with_context new_extended_example_group
+  end
+
+  def self.configure
+    RSpec.configure do |c|
+      c.output_stream = STDOUT
+      c.color_enabled = true
+    end
+  end
+
+  def self.new_extended_example_group
+    eg = describe
+    RSpec.configuration.expectation_frameworks.each do |framework|
+      eg.extend framework
+    end
+    eg.extend RSpec.configuration.mock_framework
+  end
+
   def self.report(result)
     e = describe.example
 
