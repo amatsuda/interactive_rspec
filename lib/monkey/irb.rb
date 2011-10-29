@@ -25,9 +25,17 @@ module IRB
   end
 
   module ExtendCommandBundle
-    def irspec
+    def irspec(specs = nil)
+      #TODO check if already in irspec
       InteractiveRspec.configure
-      pushws new_extended_example_group
+      if specs
+        InteractiveRspec.run_specs specs
+      else
+#         pushws InteractiveRspec.new_extended_example_group
+        irb InteractiveRspec.new_extended_example_group
+      end
+      RSpec.reset
+      nil
     end
   end
 end
