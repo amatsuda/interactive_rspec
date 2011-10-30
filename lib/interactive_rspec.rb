@@ -120,3 +120,5 @@ module InteractiveRspec
     end
   end
 end
+
+InteractiveRSpec = InteractiveRspec
