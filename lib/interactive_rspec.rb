@@ -2,6 +2,13 @@ require 'interactive_rspec/version'
 require 'rspec'
 require 'irb'
 require 'irb/completion'
+
+module InteractiveRspec
+  class << self
+    attr_accessor :rspec_mode
+  end
+end
+
 require File.join(File.dirname(__FILE__), 'monkey/irb')
 require File.join(File.dirname(__FILE__), 'monkey/rspec')
 

@@ -2,6 +2,8 @@ module RSpec
   module Matchers
     class OperatorMatcher
       def eval_match_with_reporting(actual, operator, expected)
+        return eval_match_without_reporting(actual, operator, expected) unless InteractiveRspec.rspec_mode
+
         InteractiveRspec.report begin
           eval_match_without_reporting(actual, operator, expected)
         rescue RSpec::Expectations::ExpectationNotMetError => err
@@ -18,6 +20,8 @@ module RSpec
       class << self
         unless method_defined? :handle_matcher_with_reporting
           def handle_matcher_with_reporting(actual, matcher, message=nil, &block)
+            return handle_matcher_without_reporting actual, matcher, message, &block unless InteractiveRspec.rspec_mode
+
             begin
               result = handle_matcher_without_reporting actual, matcher, message, &block
               if result.class == TrueClass
