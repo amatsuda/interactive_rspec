@@ -85,6 +85,7 @@ module InteractiveRspec
           load Rails.root.join 'config/environments/test.rb'
           Rails.env = 'test'
           reconnect_active_record
+          Bundler.require :test if defined? Bundler
         end
       end
 
