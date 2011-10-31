@@ -24,6 +24,7 @@ module InteractiveRspec
   end
 
   def self.configure
+    #TODO load spec_helper.rb?
     RSpec.configure do |c|
       c.output_stream = STDOUT
       c.color_enabled = true
@@ -38,6 +39,7 @@ module InteractiveRspec
     eg.extend RSpec.configuration.mock_framework
   end
 
+  # @param [Exception or true]
   def self.report(result)
     e = describe.example
 
