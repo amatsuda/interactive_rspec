@@ -59,10 +59,18 @@ module InteractiveRspec
   def self.run_specs(specs)
     # to avoid auto_run at_exit
     RSpec::Core::Runner.instance_variable_set '@autorun_disabled', true
-    config_options = RSpec::Core::ConfigurationOptions.new ['--color', specs]
+    config_options = RSpec::Core::ConfigurationOptions.new ['--color', fuzzy_match(specs)]
     config_options.parse_options
 
     RSpec::Core::CommandLine.new(config_options, RSpec.configuration, RSpec.world).run(STDERR, STDOUT)
+  end
+
+  def self.fuzzy_match(specs)
+    [specs, "spec/#{specs}", "#{specs}.rb", "#{specs}_spec.rb", "spec/#{specs}.rb", "spec/#{specs}_spec.rb", "#{specs}/**/*_spec.rb", "spec/#{specs}/**/*_spec.rb"].each do |pattern|
+      files = Dir.glob pattern
+      return files if files.any?
+    end
+    specs
   end
 
   def self.switch_rspec_mode(&block)
