@@ -1,0 +1,88 @@
+= Interactive RSpec
+
+RSpec on IRB
+
+
+== Features
+
+=== Execute IRB matchers in the console
+
+  irb> >> (1+1).should == 3
+  F
+  
+  Failures:
+  
+    1)
+       Failure/Error: Unable to find matching line from backtrace
+         expected: 3
+              got: 2 (using ==)
+       # (irb):2
+  
+  Finished in 18.53 seconds
+  1 example, 1 failure
+  
+  Failed examples:
+  
+  rspec ./.rvm/gems/ruby-1.8.7-p334/gems/interactive_rspec-0.0.1/lib/interactive_rspec.rb:44 #
+  => false
+
+Let's call this the "interactive RSpec".
+
+=== Execute spec file(s) via running IRB session
+
+  > irspec 'path/to/spec_file_spec.rb'
+
+The filename parameter matches to various shortcuts such as:
+
+  'spec/foo'    => spec/foo_spec.rb
+  'models/user' => spec/models/user_spec.rb
+  'controllers' => spec/controllers/**/*_spec.rb
+  :all          => **/*_spec.rb
+
+
+== How to start
+
+=== Launch an interactive RSpec console via CLI
+
+  % irspec
+
+=== Launch an interactive RSpec console via running IRB session
+
+  > require 'rubygems'
+  > require 'interacive-rspec'
+  > irspec
+
+== With Rails
+
+=== Bundle interactive-rspec gem
+
+  gem 'interactive-rspec'
+
+  % bundle
+
+=== Start up your Rails console
+
+  % rails c
+
+=== Then it's done!
+
+You can check how the matchers work:
+
+  > irspec
+  > User.new(:name => 'matz').should_not be_valid
+
+You can run any of the existing spec files:
+
+  > irspec 'spec/requests/users_spec.rb'
+
+You might notice that it runs suuuuper fast since irspec uses already loaded Rails process.
+
+
+== Contributing to Interactive RSpec
+
+* Fork, fix, then send me a pull request.
+
+
+== Copyright
+
+Copyright (c) 2011 Akira Matsuda. See MIT-LICENSE for further details.
