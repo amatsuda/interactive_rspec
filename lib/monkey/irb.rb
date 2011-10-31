@@ -29,11 +29,15 @@ module IRB
       #TODO check if already in irspec
       InteractiveRspec.configure
       if specs
-        InteractiveRspec.run_specs specs
+        InteractiveRspec.switch_rails_env do
+          InteractiveRspec.run_specs specs
+        end
       else
         InteractiveRspec.switch_rspec_mode do
-#           pushws InteractiveRspec.new_extended_example_group
-          irb InteractiveRspec.new_extended_example_group
+          InteractiveRspec.switch_rails_env do
+#             pushws InteractiveRspec.new_extended_example_group
+            irb InteractiveRspec.new_extended_example_group
+          end
         end
       end
       RSpec.reset

@@ -17,7 +17,9 @@ module InteractiveRspec
     configure if {:configure => true}.merge(options)
 
     switch_rspec_mode do
-      IRB.start_with_context new_extended_example_group
+      switch_rails_env do
+        IRB.start_with_context new_extended_example_group
+      end
     end
   end
 
@@ -69,6 +71,42 @@ module InteractiveRspec
       block.call
     ensure
       InteractiveRspec.rspec_mode = false
+    end
+  end
+
+  def self.switch_rails_env(&block)
+    begin
+      original_env_rails_env, original_rails_rails_env = nil, nil
+      if defined? Rails
+        unless Rails.env.test?
+          original_env_rails_env = ENV['RAILS_ENV']
+          ENV['RAILS_ENV'] = 'test'
+          original_rails_rails_env = Rails.env
+          load Rails.root.join 'config/environments/test.rb'
+          Rails.env = 'test'
+          reconnect_active_record
+        end
+      end
+
+      block.call
+    ensure
+      if original_env_rails_env || original_rails_rails_env
+        ENV['RAILS_ENV'] = original_env_rails_env
+        Rails.env = original_rails_rails_env
+        load Rails.root.join "config/environments/#{Rails.env}.rb"
+        reconnect_active_record
+      end
+    end
+  end
+
+  def self.reconnect_active_record
+    if defined? ActiveRecord::Base
+      if ActiveRecord::Base.respond_to? :clear_cache
+        ActiveRecord::Base.clear_cache!
+      else
+      end
+      ActiveRecord::Base.clear_all_connections!
+      ActiveRecord::Base.establish_connection
     end
   end
 end
