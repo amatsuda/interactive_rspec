@@ -15,7 +15,10 @@ require File.join(File.dirname(__FILE__), 'monkey/rspec')
 module InteractiveRspec
   def self.start(options = {})
     configure if {:configure => true}.merge(options)
-    IRB.start_with_context new_extended_example_group
+
+    switch_rspec_mode do
+      IRB.start_with_context new_extended_example_group
+    end
   end
 
   def self.configure
@@ -58,5 +61,14 @@ module InteractiveRspec
     config_options.parse_options
 
     RSpec::Core::CommandLine.new(config_options, RSpec.configuration, RSpec.world).run(STDERR, STDOUT)
+  end
+
+  def self.switch_rspec_mode(&block)
+    begin
+      InteractiveRspec.rspec_mode = true
+      block.call
+    ensure
+      InteractiveRspec.rspec_mode = false
+    end
   end
 end
