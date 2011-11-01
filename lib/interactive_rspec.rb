@@ -66,6 +66,7 @@ module InteractiveRspec
   end
 
   def self.fuzzy_match(specs)
+    return Dir.glob '**/*_spec.rb' if specs == :all
     [specs, "spec/#{specs}", "#{specs}.rb", "#{specs}_spec.rb", "spec/#{specs}.rb", "spec/#{specs}_spec.rb", "#{specs}/**/*_spec.rb", "spec/#{specs}/**/*_spec.rb"].each do |pattern|
       files = Dir.glob pattern
       return files if files.any?
