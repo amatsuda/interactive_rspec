@@ -49,7 +49,7 @@ The filename parameter matches to various shortcuts such as:
 === Launch an interactive RSpec console via running IRB session
 
   > require 'rubygems'
-  > require 'interacive-rspec'
+  > require 'interactive-rspec'
   > irspec
 
 == With Rails
