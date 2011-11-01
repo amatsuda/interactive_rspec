@@ -56,7 +56,7 @@ The filename parameter matches to various shortcuts such as:
 
 === Bundle interactive-rspec gem
 
-  gem 'interactive-rspec'
+  gem 'interactive_rspec'
 
   % bundle
 
