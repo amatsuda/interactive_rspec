@@ -49,12 +49,12 @@ The filename parameter matches to various shortcuts such as:
 === Launch an interactive RSpec console via running IRB session
 
   > require 'rubygems'
-  > require 'interactive-rspec'
+  > require 'interactive_rspec'
   > irspec
 
 == With Rails
 
-=== Bundle interactive-rspec gem
+=== Bundle interactive_rspec gem
 
   gem 'interactive_rspec'
 
