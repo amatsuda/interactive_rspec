@@ -9,8 +9,8 @@ module InteractiveRspec
   end
 end
 
-require File.join(File.dirname(__FILE__), 'monkey/irb')
-require File.join(File.dirname(__FILE__), 'monkey/rspec')
+require 'interactive_rspec/monkey/irb'
+require 'interactive_rspec/monkey/rspec'
 
 module InteractiveRspec
   def self.start(options = {})
