@@ -46,6 +46,7 @@ module InteractiveRspec
     ret = RSpec.configuration.reporter.report(1) do |r|
       r.instance_variable_set '@example_count', 1
       if result.is_a? Exception
+        result.extend(RSpec::Core::Example::NotPendingExampleFixed) if defined?(RSpec::Core::Example::NotPendingExampleFixed) && !result.respond_to?(:pending_fixed?)
         e.send :record, :status => 'failed', :finished_at => Time.now, :run_time => 0, :exception => result
         r.example_failed e
         false
