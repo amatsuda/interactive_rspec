@@ -59,10 +59,12 @@ module InteractiveRspec
     ret
   end
 
-  def self.run_specs(specs)
+  def self.run_specs(specs, options = {})
     # to avoid auto_run at_exit
     RSpec::Core::Runner.instance_variable_set '@autorun_disabled', true
-    config_options = RSpec::Core::ConfigurationOptions.new ['--color', fuzzy_match(specs)]
+    config = ['--color', fuzzy_match(specs)]
+    config += ['--line_number', options[:line].to_s] if options[:line]
+    config_options = RSpec::Core::ConfigurationOptions.new config
     config_options.parse_options
 
     RSpec::Core::CommandLine.new(config_options, RSpec.configuration, RSpec.world).run(STDERR, STDOUT)

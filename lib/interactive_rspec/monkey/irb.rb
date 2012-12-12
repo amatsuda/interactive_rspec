@@ -25,12 +25,14 @@ module IRB
   end
 
   module ExtendCommandBundle
-    def irspec(specs = nil)
+    def irspec(specs = nil, options = {})
       #TODO check if already in irspec
+      # Save configuration to later restore it.
+      configuration = RSpec.configuration
       InteractiveRspec.configure
       if specs
         InteractiveRspec.switch_rails_env do
-          InteractiveRspec.run_specs specs
+          InteractiveRspec.run_specs specs, options
         end
       else
         InteractiveRspec.switch_rspec_mode do
@@ -41,6 +43,13 @@ module IRB
         end
       end
       RSpec.reset
+      # RSpec.reset also clears the configuration, which holds the before and
+      # after hooks. Here we restore the configuration to its original state.
+      RSpec.instance_eval { @configuration = configuration }
+      # Clear filters added during previous run.
+      RSpec.configuration.filter_manager = RSpec::Core::FilterManager.new
+      # Reset information retained about previously run examples.
+      RSpec.configuration.send(:reset)
       nil
     end
   end
